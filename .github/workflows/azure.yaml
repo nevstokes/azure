@@ -55,7 +55,7 @@ jobs:
       #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       - name: "Terraform Apply"
-        run: terraform apply
+        run: terraform apply -auto-approve
         working-directory: ./terraform
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
