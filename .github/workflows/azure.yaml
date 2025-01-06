@@ -46,16 +46,16 @@ jobs:
         run: terraform validate
         working-directory: ./terraform
 
-      - name: "Terraform Plan"
-        run: terraform plan -out=tf.plan
-        working-directory: ./terraform
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      # - name: "Terraform Plan"
+      #   run: terraform plan -out=tf.plan
+      #   working-directory: ./terraform
+      #   env:
+      #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       - name: "Terraform Apply"
-        run: terraform apply tf.plan
+        run: terraform apply
         working-directory: ./terraform
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
