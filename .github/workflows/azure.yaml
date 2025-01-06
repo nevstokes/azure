@@ -10,10 +10,9 @@ jobs:
   terraform:
     name: "Terraform"
     env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      TF_VERSION: 1.10.3
+      TF_INPUT: false
+      TF_IN_AUTOMATION: true
+
     runs-on: ubuntu-latest
     environment: production
 
@@ -28,10 +27,11 @@ jobs:
       - name: "Terraform Setup"
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: ${{ env.TF_VERSION }}
+          terraform_version: 1.10.3
 
       - name: "Terraform Format"
-        run: terraform fmt
+        run: terraform fmt -check
+        continue-on-error: true
         working-directory: ./terraform
 
       - name: "Terraform Format"
@@ -45,3 +45,7 @@ jobs:
       - name: "Terraform Plan"
         run: terraform plan
         working-directory: ./terraform
+        env:
+          TF_VAR_ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          TF_VAR_ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          TF_VAR_ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
