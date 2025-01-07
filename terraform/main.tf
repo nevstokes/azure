@@ -36,7 +36,7 @@ data "azuread_users" "users" {
 }
 
 locals {
-  users = { for user in data.azuread_users.users : user.mail_nickname => {
+  users = { for user in data.azuread_users.users.users : user.mail_nickname => {
     id = user.object_id
   } }
 }
