@@ -4,7 +4,7 @@ terraform {
   backend "s3" {
     bucket       = "227385018340-tfstate-61078282"
     key          = "azure.tfstate"
-    region       = "eu-west-2"
+    region       = "eu-west-1"
     use_lockfile = true
   }
 
@@ -22,7 +22,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-2"
+  region = "eu-west-1"
 }
 
 provider "azuread" {
