@@ -35,12 +35,23 @@ data "azuread_users" "users" {
   return_all = true
 }
 
+locals {
+  users = { for user in data.azuread_users.users : user["mail_nickname"] => {
+    id = user["object_id"]
+  } }
+}
+
 resource "azuread_group" "example" {
   display_name     = "Cloud Engineers"
   owners           = [data.azuread_client_config.current.object_id]
   security_enabled = true
 }
 
+resource "azuread_group_member" "example" {
+  group_object_id  = azuread_group.example.id
+  member_object_id = local.users["steve-engineer"].id
+}
+
 output "users" {
-  value = data.azuread_users.users
+  value = data.azuread_users.users.users
 }
