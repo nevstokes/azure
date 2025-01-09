@@ -9,9 +9,12 @@ locals {
     id = user.object_id
   } if contains(keys(var.user_group_assignments), user.mail_nickname) }
 
-  assignments = flatten([for user, groups in var.user_group_assignments : [
-    for group in groups : join("-", [user, group])
-  ]])
+  assignments = merge([for user, groups in var.user_group_assignments : {
+    for group in groups : join("-", [user, group]) => {
+      user  = user
+      group = group
+    }
+  }]...)
 }
 
 resource "azuread_group" "for" {
@@ -24,7 +27,9 @@ resource "azuread_group" "for" {
   security_enabled        = true
 }
 
-resource "azuread_group_member" "example" {
-  group_object_id  = azuread_group.example.object_id
-  member_object_id = local.users["steve-engineer"].id
+resource "azuread_group_member" "assignment" {
+  for_each = local.assignments
+
+  group_object_id  = azuread_group.for[each.value.group].object_id
+  member_object_id = local.users[each.value.user].id
 }
