@@ -1,4 +1,4 @@
-name: "Terraform"
+name: "Azure Entra ID Pipeline"
 
 on:
   push:
@@ -7,6 +7,41 @@ on:
   pull_request:
 
 jobs:
+  checks:
+    name: "Checks"
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Cache TFLint plugin dir
+        uses: actions/cache@v4
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v0.52.0
+
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Run TFLint
+        run: tflint -f compact
+        working-directory: ./terraform
+        continue-on-error: true
+
   terraform:
     name: "Terraform"
     env:
@@ -26,7 +61,7 @@ jobs:
         working-directory: ./terraform
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
 
       - name: Configure AWS Credentials
