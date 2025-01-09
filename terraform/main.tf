@@ -20,8 +20,8 @@ locals {
 resource "azuread_group" "for" {
   for_each = var.groups
 
-  display_name            = each.key
-  description             = each.value
+  display_name            = each.value.name
+  description             = each.value.description
   owners                  = [data.azuread_client_config.current.object_id]
   prevent_duplicate_names = true
   security_enabled        = true
