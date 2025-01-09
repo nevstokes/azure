@@ -31,6 +31,11 @@ groups = {
 }
 
 user_group_assignments = {
+  "stef-developer" = [
+    "developers",
+    "probationers",
+  ]
+
   "steve-engineer" = [
     "cloud_engineers",
     "org_admins",
