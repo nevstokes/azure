@@ -54,7 +54,7 @@ jobs:
         working-directory: ./terraform
 
   fmt:
-    name: "Terraform Format"
+    name: Terraform Format
 
     runs-on: ubuntu-24.04-arm
 
@@ -67,11 +67,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: "Terraform Setup"
+      - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.3
 
-      - name: "Terraform Format"
+      - name: Terraform Format
         run: terraform fmt -check -diff
         continue-on-error: true
