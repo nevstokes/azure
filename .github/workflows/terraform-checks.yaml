@@ -50,8 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run TFLint
-        run: tflint --format compact --config ../.tflint.hcl
-        working-directory: ./terraform
+        run: tflint --format compact --recursive --config ${PWD}/.tflint.hcl
 
   fmt:
     name: Terraform Format
