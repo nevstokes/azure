@@ -28,3 +28,6 @@ colors:
   orange: 'd93f0b'
   red: 'b60205'
   yellow: 'fbca04'
+
+has:
+  deleted_files: {{ source.diff.files | map(attr='new_file') | match(term='/dev/null') | some }}
