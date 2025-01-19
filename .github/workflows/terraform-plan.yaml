@@ -15,7 +15,7 @@ jobs:
       TF_INPUT: false
       TF_IN_AUTOMATION: true
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-24.04
 
     permissions:
       id-token: write
@@ -36,17 +36,17 @@ jobs:
           role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
           aws-region: eu-west-1
 
-      - name: "Terraform Setup"
+      - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.3
           terraform_wrapper: true
 
-      - name: "Terraform Init"
+      - name: Terraform Init
         run: terraform init -lockfile=readonly
 
-      - name: "Terraform Apply"
-        run: terraform apply -auto-approve
+      - name: Terraform Plan
+        run: terraform plan
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_RO_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}

@@ -1,5 +1,4 @@
 variable "groups" {
-  description = "The groups"
   type = map(object({
     name        = string
     description = optional(string)
