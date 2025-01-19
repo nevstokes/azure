@@ -1,0 +1,30 @@
+manifest:
+  version: 1.0
+
+automations:
+  estimated_time_to_review:
+    if:
+      - true
+    run:
+      - action: add-label@v1
+        args:
+          label: "{{ calc.etr }} min review"
+          color: {{ colors.red if (calc.etr >= 20) else ( colors.yellow if (calc.etr >= 5) else colors.green ) }}
+
+  flag_deleted_files:
+    if:
+      - {{ has.deleted_files }}
+    run:
+      - action: add-label@v1
+        args:
+          label: 🗑️ Deleted files
+          color: {{ colors.orange }}
+
+calc:
+  etr: {{ branch | estimatedReviewTime }}
+
+colors:
+  green: '0e8a16'
+  orange: 'd93f0b'
+  red: 'b60205'
+  yellow: 'fbca04'
