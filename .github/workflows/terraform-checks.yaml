@@ -1,16 +1,22 @@
-name: "Azure Entra ID Pipeline"
+name: Terraform Checks
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
-  pull_request:
+    paths:
+      - .github/workflows/**
+      - terraform/*.tf*
 
 jobs:
-  checks:
-    name: "Checks"
+  lint:
+    name: Terraform Lint
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      id-token: write
+      contents: read
 
     defaults:
       run:
@@ -20,7 +26,13 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Cache TFLint plugin dir
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
+          aws-region: eu-west-1
+
+      - name: TFLint Cache
         uses: actions/cache@v4
         with:
           path: ~/.tflint.d/plugins
@@ -40,20 +52,11 @@ jobs:
       - name: Run TFLint
         run: tflint -f compact
         working-directory: ./terraform
-        continue-on-error: true
 
-  terraform:
-    name: "Terraform"
-    env:
-      TF_INPUT: false
-      TF_IN_AUTOMATION: true
+  fmt:
+    name: "Terraform Format"
 
-    runs-on: ubuntu-latest
-    environment: production
-
-    permissions:
-      id-token: write
-      contents: read
+    runs-on: ubuntu-24.04-arm
 
     defaults:
       run:
@@ -64,30 +67,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
-          aws-region: eu-west-1
-
       - name: "Terraform Setup"
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.3
 
       - name: "Terraform Format"
-        run: terraform fmt -check
+        run: terraform fmt -check -diff
         continue-on-error: true
-
-      - name: "Terraform Init"
-        run: terraform init
-
-      - name: "Terraform Validate"
-        run: terraform validate
-
-      - name: "Terraform Apply"
-        run: terraform apply -auto-approve
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
