@@ -26,11 +26,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
-      #     aws-region: eu-west-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
+          aws-region: eu-west-1
 
       - name: TFLint Cache
         uses: actions/cache@v4
