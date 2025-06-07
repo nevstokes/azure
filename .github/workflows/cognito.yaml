@@ -18,10 +18,20 @@ jobs:
     # Repository environments can be used in any repository in any GitHub plan,
     # but only public repos or Enterprise plans support settings protection rules for the environment.
     environment: ${{ inputs.environment }}
+
     permissions:
       id-token: write
+      contents: read
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
 
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
       - name: Get Credentials
         uses: catnekaise/cognito-idpool-auth@v1.0.2
         with:
