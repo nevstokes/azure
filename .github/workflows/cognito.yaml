@@ -31,4 +31,4 @@ jobs:
       - name: STS Get Caller Identity
         run: |
           aws sts get-caller-identity
-          aws s3 ls
+          aws s3 ls s3://058264337777-eu-west-1-tfstate-667d5279
