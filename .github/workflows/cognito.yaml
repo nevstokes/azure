@@ -50,8 +50,8 @@ jobs:
       - name: Terraform Init
         run: terraform init -lockfile=readonly -backend-config=./config/pr/s3.tfbackend
 
-      # - name: Terraform Plan
-      #   run: terraform plan -compact-warnings
+      - name: Terraform Plan
+        run: terraform plan -compact-warnings
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
