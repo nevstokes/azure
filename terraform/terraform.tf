@@ -24,7 +24,7 @@ provider "aws" {
   region = "eu-west-1"
 
   assume_role {
-    role_arn     = "arn:aws:iam::058264337777:role/TerraformProvisioning"
+    role_arn     = "arn:aws:iam::058264337777:role/${terraform.applying ? "TerraformProvisioning" : "TerraformRead"}"
     session_name = "ChainedDeploymentRole"
   }
 }

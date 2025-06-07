@@ -35,9 +35,8 @@ jobs:
         uses: catnekaise/cognito-idpool-auth@v1.0.2
         with:
           auth-flow: "enhanced"
-          audience: "cognito-identity.amazonaws.com"
           aws-region: "eu-west-1"
-          aws-account-id: "058264337777"
+          aws-account-id: ${{ vars.AWS_ACCOUNT_ID }}
           cognito-identity-pool-id: "eu-west-1:68e8908a-f6be-4f14-af3a-7b627420a0d1"
           set-in-environment: true
 
@@ -48,7 +47,7 @@ jobs:
           terraform_wrapper: true
 
       - name: Terraform Init
-        run: terraform init -lockfile=readonly -backend-config=./config/pr/s3.tfbackend
+        run: terraform init -lockfile=readonly -backend-config=./config/${{ inputs.environment }}/s3.tfbackend
 
       - name: Terraform Plan
         run: terraform plan -compact-warnings
