@@ -1,0 +1,31 @@
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: string
+        required: true
+        description: "Environment"
+        default: "dev"
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    # Repository environments can be used in any repository in any GitHub plan,
+    # but only public repos or Enterprise plans support settings protection rules for the environment.
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+    steps:
+      - name: Get Credentials from Amazon Cognito Identity
+        uses: catnekaise/cognito-idpool-auth@v1.0.2
+        with:
+          auth-flow: "enhanced"
+          audience: "cognito-identity.amazonaws.com"
+          aws-region: "eu-west-1"
+          aws-account-id: "058264337777"
+          cognito-identity-pool-id: "identitypool-544d7e57"
+          set-in-environment: true
+
+      - name: STS Get Caller Identity
+        run: |
+          aws sts get-caller-identity
