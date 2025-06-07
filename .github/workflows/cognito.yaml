@@ -17,8 +17,12 @@ jobs:
     environment: ${{ inputs.environment }}
     permissions:
       id-token: write
+
     steps:
-      - name: Get Credentials from Amazon Cognito Identity
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Get Credentials
         uses: catnekaise/cognito-idpool-auth@v1.0.2
         with:
           auth-flow: "enhanced"
@@ -28,7 +32,12 @@ jobs:
           cognito-identity-pool-id: "eu-west-1:68e8908a-f6be-4f14-af3a-7b627420a0d1"
           set-in-environment: true
 
-      - name: STS Get Caller Identity
-        run: |
-          aws sts get-caller-identity
-          aws s3 ls s3://058264337777-eu-west-1-tfstate-667d5279
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.1
+          terraform_wrapper: true
+
+      - name: Terraform Init
+        run: terraform init -lockfile=readonly
+
