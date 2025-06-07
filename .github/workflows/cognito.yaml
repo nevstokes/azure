@@ -4,10 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        type: string
+        type: choice
         required: true
-        description: "Environment"
-        default: "dev"
+        description: Environment
+        options:
+        - dev
+        - prod
+        default: dev
 
 jobs:
   test:
