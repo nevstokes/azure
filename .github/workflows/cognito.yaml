@@ -1,3 +1,5 @@
+name: Cognito
+
 on:
   workflow_dispatch:
     inputs:
@@ -23,7 +25,7 @@ jobs:
           audience: "cognito-identity.amazonaws.com"
           aws-region: "eu-west-1"
           aws-account-id: "058264337777"
-          cognito-identity-pool-id: "identitypool-544d7e57"
+          cognito-identity-pool-id: "eu-west-1:68e8908a-f6be-4f14-af3a-7b627420a0d1"
           set-in-environment: true
 
       - name: STS Get Caller Identity
