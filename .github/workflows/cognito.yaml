@@ -21,7 +21,6 @@ jobs:
     env:
       TF_IN_AUTOMATION: true
       TF_INPUT: false
-      TF_WORKSPACE: ${{ github.repository }}
 
     permissions:
       id-token: write

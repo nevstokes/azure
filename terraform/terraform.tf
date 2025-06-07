@@ -4,7 +4,7 @@ terraform {
   backend "s3" {
     encrypt              = true
     use_lockfile         = true
-    workspace_key_prefix = "repo:"
+    workspace_key_prefix = "nevstokes/azure"
   }
 
   required_providers {
