@@ -20,11 +20,19 @@ terraform {
   }
 }
 
+locals {
+  aws_read_role_arn  = "arn:aws:iam::058264337777:role/TerraformRead"
+  aws_write_role_arn = "arn:aws:iam::058264337777:role/TerraformProvisioning"
+
+  role_arn = terraform.applying ? local.aws_write_role_arn : local.aws_read_role_arn
+}
+
+
 provider "aws" {
   region = "eu-west-1"
 
   assume_role {
-    role_arn     = "arn:aws:iam::058264337777:role/${terraform.applying ? "TerraformProvisioning" : "TerraformRead"}"
+    role_arn     = local.role_arn
     session_name = "ChainedDeploymentRole"
   }
 }
