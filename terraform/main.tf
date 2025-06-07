@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "sample_bucket" {
-  bucket = "sample-bucket"
+  bucket = "058264337777-sample-bucket-ewioe22"
 }
 
 # data "azuread_client_config" "current" {}
