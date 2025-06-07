@@ -1,10 +1,8 @@
 terraform {
-  required_version = ">= 1.10"
+  required_version = ">= 1.12"
 
   backend "s3" {
-    bucket       = "227385018340-tfstate-61078282"
-    key          = "azure.tfstate"
-    region       = "eu-west-1"
+    encrypt      = true
     use_lockfile = true
   }
 

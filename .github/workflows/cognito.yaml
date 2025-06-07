@@ -49,5 +49,5 @@ jobs:
           terraform_wrapper: true
 
       - name: Terraform Init
-        run: terraform init -lockfile=readonly
+        run: terraform init -lockfile=readonly -backend-config=./config/pr/s3.tfbackend
 
