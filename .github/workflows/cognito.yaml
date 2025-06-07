@@ -15,9 +15,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
-    # Repository environments can be used in any repository in any GitHub plan,
-    # but only public repos or Enterprise plans support settings protection rules for the environment.
+
     environment: ${{ inputs.environment }}
+
+    env:
+      TF_IN_AUTOMATION: true
+      TF_INPUT: false
+      TF_WORKSPACE: ${{ github.repository }}
 
     permissions:
       id-token: write
@@ -51,3 +55,5 @@ jobs:
       - name: Terraform Init
         run: terraform init -lockfile=readonly -backend-config=./config/pr/s3.tfbackend
 
+      - name: Terraform Plan
+        run: terraform plan

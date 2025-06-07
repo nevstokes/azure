@@ -2,8 +2,9 @@ terraform {
   required_version = ">= 1.12"
 
   backend "s3" {
-    encrypt      = true
-    use_lockfile = true
+    encrypt              = true
+    use_lockfile         = true
+    workspace_key_prefix = "repo:"
   }
 
   required_providers {
