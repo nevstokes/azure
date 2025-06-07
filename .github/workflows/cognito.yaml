@@ -22,9 +22,6 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
       - name: Get Credentials
         uses: catnekaise/cognito-idpool-auth@v1.0.2
         with:
