@@ -31,3 +31,4 @@ jobs:
       - name: STS Get Caller Identity
         run: |
           aws sts get-caller-identity
+          aws s3 ls
