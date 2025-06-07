@@ -20,11 +20,14 @@ terraform {
   }
 }
 
-locals {
-  aws_read_role_arn  = "arn:aws:iam::058264337777:role/TerraformRead"
-  aws_write_role_arn = "arn:aws:iam::058264337777:role/TerraformProvisioning"
+data "aws_caller_identity" "current" {}
 
-  role_arn = terraform.applying ? local.aws_write_role_arn : local.aws_read_role_arn
+locals {
+  aws_read_role_arn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/TerraformRead"
+  aws_write_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/TerraformProvisioning"
+
+  # role_arn = terraform.applying ? local.aws_write_role_arn : local.aws_read_role_arn
+  role_arn = local.aws_write_role_arn
 }
 
 
