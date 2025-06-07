@@ -5,10 +5,6 @@ terraform {
     encrypt              = true
     use_lockfile         = true
     workspace_key_prefix = "nevstokes/azure"
-    assume_role = {
-      role_arn     = "arn:aws:iam::058264337777:role/TerraformProvisioning"
-      session_name = "ChainedDeploymentRole"
-    }
   }
 
   required_providers {
@@ -26,6 +22,11 @@ terraform {
 
 provider "aws" {
   region = "eu-west-1"
+
+  assume_role {
+    role_arn     = "arn:aws:iam::058264337777:role/TerraformProvisioning"
+    session_name = "ChainedDeploymentRole"
+  }
 }
 
 provider "azuread" {
