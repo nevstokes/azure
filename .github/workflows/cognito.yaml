@@ -4,13 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        type: choice
+        type: environment
         required: true
         description: Environment
-        options:
-        - dev
-        - prod
-        default: dev
 
 jobs:
   test:
@@ -38,11 +34,11 @@ jobs:
       - name: Get Credentials
         uses: catnekaise/cognito-idpool-auth@v1.0.2
         with:
-          auth-flow: "enhanced"
-          audience: "cognito-identity.amazonaws.com"
-          aws-region: "eu-west-1"
-          aws-account-id: "058264337777"
-          cognito-identity-pool-id: "eu-west-1:68e8908a-f6be-4f14-af3a-7b627420a0d1"
+          auth-flow: enhanced
+          audience: cognito-identity.amazonaws.com
+          aws-region: eu-west-1
+          aws-account-id: 058264337777
+          cognito-identity-pool-id: eu-west-1:68e8908a-f6be-4f14-af3a-7b627420a0d1
           set-in-environment: true
 
       - name: Terraform Setup
@@ -54,5 +50,8 @@ jobs:
       - name: Terraform Init
         run: terraform init -lockfile=readonly -backend-config=./config/pr/s3.tfbackend
 
-      - name: Terraform Plan
-        run: terraform plan
+      # - name: Terraform Plan
+      #   run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
