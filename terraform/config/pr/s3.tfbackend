@@ -1,3 +1,3 @@
-bucket = "227385018340-euw1-tfstate-61078282"
+bucket = "058264337777-eu-west-1-tfstate-667d5279"
 key    = "azure.tfstate"
 region = "eu-west-1"
