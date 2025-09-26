@@ -2,5 +2,28 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
-  ]
+  ],
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "automergeSchedule": ["* 22-23,0-4 * * *", "* * * * 0,6"],
+  "packageRules": [
+    {
+      "matchDatasources": ["github-runners"],
+      "minimumReleaseAge": "1 month",
+      "internalChecksFilter": "strict"
+    },
+    {
+      "matchDatasources": ["github-tags", "terraform-module", "terraform-provider"],
+      "minimumReleaseAge": "1 week"
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  }
 }
