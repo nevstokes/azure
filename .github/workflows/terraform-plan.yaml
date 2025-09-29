@@ -11,9 +11,16 @@ on:
 jobs:
   terraform:
     name: Terraform
+
     env:
       TF_INPUT: false
       TF_IN_AUTOMATION: true
+
+    strategy:
+      matrix:
+        environment: [ production ]
+
+    environment: ${{ matrix.environment }}
 
     runs-on: ubuntu-24.04
 
@@ -48,7 +55,7 @@ jobs:
           terraform_wrapper: true
 
       - name: Terraform Init
-        run: terraform init -lockfile=readonly
+        run: terraform init -lockfile=readonly -backend-config=./config/${{ matrix.environment }}/s3.tfbackend
 
       - name: Terraform Plan
         run: terraform plan
