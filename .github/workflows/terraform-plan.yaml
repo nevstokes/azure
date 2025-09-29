@@ -12,18 +12,6 @@ jobs:
   terraform:
     name: Terraform
 
-    env:
-      TF_INPUT: false
-      TF_IN_AUTOMATION: true
-
-    strategy:
-      matrix:
-        environment: [ production ]
-
-    environment: ${{ matrix.environment }}
-
-    runs-on: ubuntu-24.04
-
     permissions:
       id-token: write
       contents: read
@@ -32,6 +20,18 @@ jobs:
       run:
         shell: bash
         working-directory: ./terraform
+
+    env:
+      TF_INPUT: false
+      TF_IN_AUTOMATION: true
+
+    strategy:
+      matrix:
+        environment: [production]
+
+    runs-on: ubuntu-24.04
+
+    environment: ${{ matrix.environment }}
 
     steps:
       - name: Harden Runner

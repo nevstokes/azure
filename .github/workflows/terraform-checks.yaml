@@ -18,8 +18,6 @@ jobs:
   lint:
     name: Terraform Lint
 
-    runs-on: ubuntu-24.04
-
     permissions:
       id-token: write
       contents: read
@@ -27,6 +25,14 @@ jobs:
     defaults:
       run:
         shell: bash
+
+    strategy:
+      matrix:
+        environment: [production]
+
+    runs-on: ubuntu-24.04
+
+    environment: ${{ matrix.environment }}
 
     steps:
       - name: Harden Runner
