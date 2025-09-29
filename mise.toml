@@ -1,0 +1,13 @@
+[hooks]
+enter = "mise install"
+# postinstall = "lefthook install"
+
+[tools]
+lefthook = "latest"
+"npm:prettier" = "latest"
+"terraform" = "1.13"
+uv = "latest"
+yamllint = "latest"
+
+# [settings]
+# lockfile = true
