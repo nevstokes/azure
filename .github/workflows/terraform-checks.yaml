@@ -37,11 +37,14 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 #v5.0.0
+      - name: Get Credentials
+        uses: catnekaise/cognito-idpool-auth@41fcec30f55c069bc59f5773077c37477c743bf6 #v1.0.2
         with:
-          role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
-          aws-region: eu-west-1
+          auth-flow: "enhanced"
+          aws-region: "eu-west-1"
+          aws-account-id: ${{ vars.AWS_ACCOUNT_ID }}
+          cognito-identity-pool-id: "${{ vars.IDENTITY_POOL }}"
+          set-in-environment: true
 
       - name: TFLint Cache
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
