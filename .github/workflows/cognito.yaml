@@ -36,13 +36,16 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Mask Secrets
+        run: echo "::add-mask::${{ secrets.AWS_ACCOUNT_ID }}"
+
       - name: Get Credentials
         uses: catnekaise/cognito-idpool-auth@41fcec30f55c069bc59f5773077c37477c743bf6 #v1.0.2
         with:
           auth-flow: "enhanced"
-          aws-region: "eu-west-1"
-          aws-account-id: ${{ vars.AWS_ACCOUNT_ID }}
-          cognito-identity-pool-id: "${{ vars.IDENTITY_POOL }}"
+          aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
+          aws-region: ${{ vars.AWS_REGION }}
+          cognito-identity-pool-id: ${{ vars.IDENTITY_POOL }}
           set-in-environment: true
 
       - name: Terraform Setup
