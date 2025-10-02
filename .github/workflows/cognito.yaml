@@ -46,6 +46,7 @@ jobs:
           aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws-region: ${{ vars.AWS_REGION }}
           cognito-identity-pool-id: ${{ vars.IDENTITY_POOL }}
+          chain-pass-claims: "actor,ref,sha,repository,job_workflow_ref,event_name,environment"
           set-in-environment: true
 
       - name: Terraform Setup
