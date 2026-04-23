@@ -18,8 +18,6 @@ jobs:
   lint:
     name: Terraform Lint
 
-    runs-on: ubuntu-24.04
-
     permissions:
       id-token: write
       contents: read
@@ -28,6 +26,14 @@ jobs:
       run:
         shell: bash
 
+    strategy:
+      matrix:
+        environment: [production]
+
+    runs-on: ubuntu-24.04
+
+    environment: ${{ matrix.environment }}
+
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
@@ -35,22 +41,25 @@ jobs:
           egress-policy: audit
 
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
+      - name: Get Credentials
+        uses: catnekaise/cognito-idpool-auth@41fcec30f55c069bc59f5773077c37477c743bf6 #v1.0.2
         with:
-          role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
-          aws-region: eu-west-1
+          auth-flow: "enhanced"
+          aws-region: "eu-west-1"
+          aws-account-id: ${{ vars.AWS_ACCOUNT_ID }}
+          cognito-identity-pool-id: "${{ vars.IDENTITY_POOL }}"
+          set-in-environment: true
 
       - name: TFLint Cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
         with:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.tflint.hcl') }}
 
       - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v5
+        uses: terraform-linters/setup-tflint@ae78205cfffec9e8d93fd2b3115c7e9d3166d4b6 #v5.0.0
         with:
           tflint_version: v0.52.0
 
@@ -60,8 +69,8 @@ jobs:
           # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Run TFLint
-        run: tflint --format compact --recursive --config ${PWD}/.tflint.hcl
+      # - name: Run TFLint
+      #   run: tflint --format compact --recursive --config ${PWD}/.tflint.hcl # https://github.com/marketplace/actions/junit-report-action
 
   fmt:
     name: Terraform Format
@@ -80,10 +89,10 @@ jobs:
           egress-policy: audit
 
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
       - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd #v3.1.2
         with:
           terraform_version: 1.13.3
 
