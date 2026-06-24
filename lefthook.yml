@@ -1,0 +1,40 @@
+output:
+  - summary
+  - success
+  - failure
+  - execution_out
+  - execution_info
+
+pre-commit:
+  parallel: true
+
+  jobs:
+    - name: Prettier (Markdown)
+      run: prettier --write --prose-wrap always {staged_files}
+      glob:
+        - "**/*.{markdown,md}"
+      stage_fixed: true
+
+    - name: Prettier (General)
+      run: prettier --write {staged_files}
+      glob:
+        - "**/*.{json,yaml,yml}"
+      stage_fixed: true
+
+    - name: Mise Format
+      run: mise fmt
+      glob:
+        - "mise.toml"
+      stage_fixed: true
+
+    - name: Terraform Format
+      run: terraform fmt {staged_files}
+      glob:
+        - terraform/*.tf"
+      stage_fixed: true
+
+    # - name: YAML Lint
+    #   run: yamllint {staged_files}
+    #   glob:
+    #     - "**/*.{yaml,yml}"
+    #   stage_fixed: true
