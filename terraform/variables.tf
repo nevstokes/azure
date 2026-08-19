@@ -7,6 +7,7 @@ variable "groups" {
   default = {}
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "user_group_assignments" {
   description = "Map of users and their groups"
   type        = map(set(string))
