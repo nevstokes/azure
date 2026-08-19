@@ -34,10 +34,10 @@ jobs:
           egress-policy: audit
 
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Get Credentials
-        uses: catnekaise/cognito-idpool-auth@v1.0.2
+        uses: catnekaise/cognito-idpool-auth@41fcec30f55c069bc59f5773077c37477c743bf6 # v1.0.2
         with:
           auth-flow: "enhanced"
           aws-region: "eu-west-1"
@@ -46,7 +46,7 @@ jobs:
           set-in-environment: true
 
       - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
           terraform_version: 1.13.3
           terraform_wrapper: true
