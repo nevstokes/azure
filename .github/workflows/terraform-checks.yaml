@@ -35,22 +35,22 @@ jobs:
           egress-policy: audit
 
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: catnekaise/cognito-idpool-auth@41fcec30f55c069bc59f5773077c37477c743bf6 # v1.0.2
         with:
           role-to-assume: ${{ vars.TERRAFORM_STATE_ROLE }}
           aws-region: eu-west-1
 
       - name: TFLint Cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.tflint.hcl') }}
 
       - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v5
+        uses: terraform-linters/setup-tflint@ae78205cfffec9e8d93fd2b3115c7e9d3166d4b6 # v5
         with:
           tflint_version: v0.52.0
 
@@ -80,10 +80,10 @@ jobs:
           egress-policy: audit
 
       - name: Checkout source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
           terraform_version: 1.13.3
 
